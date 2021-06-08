@@ -1,3 +1,4 @@
+import twint
 def test_scraper(scrape_str,output_filename,number_tweets):
     #  Configure
     c = twint.Config()
@@ -6,5 +7,6 @@ def test_scraper(scrape_str,output_filename,number_tweets):
     c.Output = f"{output_filename}.json"
     c.Limit = number_tweets
     c.Language='en'
+    c.Location=True
     # Run
-    return twint.run.Search(c)
+    twint.run.Search(c)
