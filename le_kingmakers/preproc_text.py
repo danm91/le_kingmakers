@@ -5,13 +5,16 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 
-urlPattern = r"((http://)[^ ]*|(https://)[^ ]*|( www\.)[^ ]*)"
-userPattern = '@[^\s]+'
-some = 'amp,today,tomorrow,going,girl'
-stopword = set(stopwords.words('english'))
+
 
 
 def process_tweets(tweet):
+  urlPattern = r"((http://)[^ ]*|(https://)[^ ]*|( www\.)[^ ]*)"
+  userPattern = '@[^\s]+'
+  some = 'amp,today,tomorrow,going,girl'
+  stopword = stopwords.words('english')
+  stopword.remove('not')
+  stopword.remove('no')
   # Lower Casing
     tweet = re.sub(r"he's", "he is", tweet)
     tweet = re.sub(r"there's", "there is", tweet)
