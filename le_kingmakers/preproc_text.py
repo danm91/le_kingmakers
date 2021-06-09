@@ -1,10 +1,15 @@
 import re
 import string
 import pickle
+from nltk.tokenize import word_tokenize
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
 
 urlPattern = r"((http://)[^ ]*|(https://)[^ ]*|( www\.)[^ ]*)"
 userPattern = '@[^\s]+'
 some = 'amp,today,tomorrow,going,girl'
+stopword = set(stopwords.words('english'))
+
 
 def process_tweets(tweet):
   # Lower Casing
@@ -138,5 +143,4 @@ def process_tweets(tweet):
       if len(w)>1:
         word = wordLemm.lemmatize(w)
         finalwords.append(word)
-    return finalwords
-# return ' '.join(finalwords) #changed so that the return is already tokenized
+    return ' '.join(finalwords) 
