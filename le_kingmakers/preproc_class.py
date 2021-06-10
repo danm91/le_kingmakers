@@ -1,6 +1,6 @@
 from sklearn.base import TransformerMixin, BaseEstimator
 
-from preproc_text import process_tweets
+from le_kingmakers.preproc_text import process_tweets
 
 
 class TextPreprocess(TransformerMixin, BaseEstimator): 
