@@ -1,6 +1,6 @@
 from sklearn.base import TransformerMixin, BaseEstimator
 
-from preproc_abbv import convert_abbrev_in_text
+from le_kingmakers.preproc_abbv import convert_abbrev_in_text
 
 class TextConvertAbbv(TransformerMixin, BaseEstimator): 
 # TransformerMixin generates a fit_transform method from fit and transform
