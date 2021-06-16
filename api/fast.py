@@ -70,10 +70,11 @@ def prediction(text: str):
     text = preprocess(text)
     encoded_input = tokenizer(text, return_tensors='tf')
     output = model(encoded_input)
-    scores = np.asarray(tf.nn.softmax(output.logits, axis=-1))[0]
+    scores = np.asarray(tf.nn.softmax(output.logits, axis=-1))[0].tolist()
     score = scores[2] - scores[0]
+    return score
 
-# def prediction(text: str):
-#     df_text = pd.DataFrame([text], columns=['tweet'])
-#     prediction = model.predict(df_text['tweet'])
-#     return {'prediction': str(prediction[0])}
+def prediction(text: str):
+    df_text = pd.DataFrame([text], columns=['tweet'])
+    prediction = model.predict(df_text['tweet'])
+    return {'prediction': str(prediction[0])}
