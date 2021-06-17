@@ -122,7 +122,7 @@ def prediction(text: str):
     return {'prediction': str(prediction[0])}
 
 @app.get("/scrapeandpredict")
-def scrape_n_predict(search: str, count: int):
+def scrape_n_predict(search: str, count = 50):
     output_file = search + str(random.randint(0, 9999999)) + '.csv'
     twint_scrape(search,output_file, n = count)
     df = pd.read_csv(output_file)
