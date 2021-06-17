@@ -80,14 +80,14 @@ def roberta_encode(data, maximum_length) :
         
     return np.array(input_ids),np.array(attention_masks)
 
-def twint_scrape(search,output_file):
+def twint_scrape(search,output_file, n):
     
     c = twint.Config()
 
     c.Search = search
     c.Store_csv = True
     c.Lang = 'en'
-    c.Limit = 100
+    c.Limit = n
     c.Output = output_file
     c.Count = True
     c.Hide_output = True
@@ -122,9 +122,9 @@ def prediction(text: str):
     return {'prediction': str(prediction[0])}
 
 @app.get("/scrapeandpredict")
-def scrape_n_predict(search_term: str):
-    output_file = search_term + str(random.randint(0, 9999999)) + '.csv'
-    twint_scrape(search_term,output_file)
+def scrape_n_predict(search: str, count: int):
+    output_file = search + str(random.randint(0, 9999999)) + '.csv'
+    twint_scrape(search,output_file, n = count)
     df = pd.read_csv(output_file)
     df['clean'] = df['tweet'].apply(preprocess)
     
@@ -157,18 +157,18 @@ def scrape_n_predict(search_term: str):
     #create count column 
     #count = 1 + number of retweets + 0.5(number of likes)
     #a retweet is equivalent to a tweet. A like equivalent to half a tweet. 
-    df['count'] = 1 + df['retweets_count'].astype('int64') + 0.5*df['likes_count'].astype('int64')
+    #df['count'] = 1 + df['retweets_count'].astype('int64') + 0.5*df['likes_count'].astype('int64')
     
     #multiply score by respective count, will standardize later. 
-    df['scores'] = df['scores'] * df['count']
+    #df['scores'] = df['scores'] * df['count']
     #ignore seconds 
-    df['created_at'] = df['created_at'].apply(shorten_time)
+    #df['created_at'] = df['created_at'].apply(shorten_time)
     
     #group tweets by time of creation
-    grouped = df[['scores', 'created_at', 'count']].groupby(['created_at']).sum().reset_index()
+    #grouped = df[['scores', 'created_at', 'count']].groupby(['created_at']).sum().reset_index()
     #get the mean scores
-    grouped['scores'] = grouped['scores'] / grouped['count']
+    #grouped['scores'] = grouped['scores'] / grouped['count']
     #convert 'created_at' to datetime datatype
-    grouped['created_at'] = pd.to_datetime(grouped['created_at'], format='%Y-%m-%d %H:%M')
+    #grouped['created_at'] = pd.to_datetime(grouped['created_at'], format='%Y-%m-%d %H:%M')
     #return as json file
-    return grouped.to_json(), df.to_json()
+    return df.to_json()
